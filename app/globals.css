@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
+/* Light/Dark primitives */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
+  --foreground: #0a0a0a;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --border: #e5e7eb;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Default accent: purple */
+  --accent: #7c3aed; /* 600 */
+  --accent-foreground: #fafafa;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --muted: #111113;
+    --muted-foreground: #a1a1aa;
+    --border: #27272a;
   }
 }
 
+/* Accent presets via data attribute */
+html[data-accent="purple"] {
+  --accent: #7c3aed; /* purple-600 */
+}
+html[data-accent="blue"] {
+  --accent: #2563eb; /* blue-600 */
+}
+html[data-accent="teal"] {
+  --accent: #0ea5a8; /* teal-500 */
+}
+html[data-accent="orange"] {
+  --accent: #ea580c; /* orange-600 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Base */
+* { @apply border-border; }
+html, body { height: 100%; }
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Links */
+a { @apply underline-offset-4 transition-colors; }
+a:hover { @apply underline; }
+
+/* Utilities */
+.container-page {
+  @apply max-w-6xl mx-auto px-6 sm:px-8;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-medium transition-colors;
+}
+.btn-primary {
+  @apply bg-accent text-accent-foreground hover:opacity-90;
+}
+.btn-ghost {
+  @apply bg-transparent text-foreground hover:bg-muted;
 }
