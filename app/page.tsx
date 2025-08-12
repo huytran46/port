@@ -3,6 +3,27 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Github, Linkedin, Mail, Phone } from "lucide-react";
 
+// Deterministic sprinkled mini-avatar positions to avoid hydration mismatch
+const AVATAR_CONFETTI_COUNT = 30;
+function createSeededRandom(seed: number) {
+  let t = seed >>> 0;
+  return () => {
+    // Linear congruential generator (LCG)
+    t = (1103515245 * t + 12345) % 2147483648;
+    return t / 2147483648;
+  };
+}
+const seededRandom = createSeededRandom(46);
+const AVATAR_CONFETTI = Array.from({ length: AVATAR_CONFETTI_COUNT }, () => {
+  const top = Math.round(seededRandom() * 100);
+  const left = Math.round(seededRandom() * 100);
+  const size = 18 + Math.round(seededRandom() * 10); // 18–28px
+  const duration = 6 + Math.round(seededRandom() * 4); // 6–10s
+  const delay = Number((seededRandom() * 2).toFixed(2)); // 0–2s
+  const drift = 6 + Math.round(seededRandom() * 4); // 6–10px
+  return { top, left, size, duration, delay, drift };
+});
+
 export default function Home() {
   return (
     <div>
@@ -45,8 +66,50 @@ function Section({
 
 function Hero() {
   return (
-    <header className="container-page pt-24 sm:pt-32 pb-16">
-      <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
+    <header className="container-page relative pt-24 sm:pt-32 pb-16">
+      {/* Decorative mini-avatars layer */}
+      <div
+        className="absolute inset-0 hidden sm:block pointer-events-none select-none"
+        aria-hidden="true"
+      >
+        <motion.div
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {AVATAR_CONFETTI.map((it, idx) => (
+            <motion.img
+              key={idx}
+              src="/avatar.png"
+              alt=""
+              width={it.size}
+              height={it.size}
+              className="absolute rounded-full"
+              style={{
+                top: `${it.top}%`,
+                left: `${it.left}%`,
+                width: it.size,
+                height: it.size,
+                opacity: 0.15,
+              }}
+              initial={{ x: 0, y: 0, scale: 1 }}
+              animate={{
+                x: [0, it.drift, 0, -it.drift, 0],
+                y: [0, -it.drift, 0, it.drift, 0],
+              }}
+              transition={{
+                duration: it.duration,
+                delay: it.delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </motion.div>
+      </div>
+
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
         <div>
           {/* <motion.h1
             className="tracking-widest text-muted-foreground"
