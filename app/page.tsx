@@ -48,23 +48,25 @@ function Hero() {
     <header className="container-page pt-24 sm:pt-32 pb-16">
       <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
         <div>
-          <motion.p
-            className="text-sm uppercase tracking-widest text-muted-foreground"
+          {/* <motion.h1
+            className="tracking-widest text-muted-foreground"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
             Hi 👋
-          </motion.p>
+          </motion.h1> */}
           <motion.h1
             className="text-4xl sm:text-6xl font-semibold leading-[1.1] mt-2"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
+            Hi 👋
+            <br />
             I’m Huy Tran
             <br />
-            <span className="text-accent">Software Engineer</span> (Front End)
+            <span className="text-accent">Software Engineer</span>
           </motion.h1>
           <motion.div
             className="mt-8 flex flex-wrap items-center gap-3 text-sm text-muted-foreground"
@@ -129,7 +131,7 @@ function Hero() {
         >
           <div className="absolute inset-0 rounded-full bg-accent/20 blur-3xl" />
           <div className="relative rounded-full ring-1 ring-border overflow-hidden">
-            <Image src="/avatar.png" alt="Huy Tran" width={640} height={640} />
+            <Image src="/avatar.png" alt="Huy Tran" width={320} height={320} />
           </div>
         </motion.div>
       </div>
