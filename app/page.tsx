@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Github, Linkedin, Mail, Phone } from "lucide-react";
 
 // Deterministic sprinkled mini-avatar positions to avoid hydration mismatch
 const AVATAR_CONFETTI_COUNT = 30;
+
 function createSeededRandom(seed: number) {
   let t = seed >>> 0;
   return () => {
@@ -13,7 +14,9 @@ function createSeededRandom(seed: number) {
     return t / 2147483648;
   };
 }
+
 const seededRandom = createSeededRandom(46);
+
 const AVATAR_CONFETTI = Array.from({ length: AVATAR_CONFETTI_COUNT }, () => {
   const top = Math.round(seededRandom() * 100);
   const left = Math.round(seededRandom() * 100);
@@ -64,6 +67,36 @@ function Section({
   );
 }
 
+function WavingHand() {
+  const prefersReducedMotion = useReducedMotion();
+  return (
+    <motion.span
+      role="img"
+      aria-label="waving hand"
+      className="inline-block"
+      style={{ transformOrigin: "70% 70%" }}
+      initial={{ rotate: 0 }}
+      animate={
+        prefersReducedMotion
+          ? undefined
+          : { rotate: [0, 14, -8, 14, -4, 10, 0] }
+      }
+      transition={
+        prefersReducedMotion
+          ? undefined
+          : {
+              duration: 2,
+              repeat: Infinity,
+              repeatDelay: 1.5,
+              ease: "easeInOut",
+            }
+      }
+    >
+      👋
+    </motion.span>
+  );
+}
+
 function Hero() {
   return (
     <header className="container-page relative pt-24 sm:pt-32 pb-16">
@@ -111,21 +144,14 @@ function Hero() {
 
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
         <div>
-          {/* <motion.h1
-            className="tracking-widest text-muted-foreground"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            Hi 👋
-          </motion.h1> */}
           <motion.h1
             className="text-4xl sm:text-6xl font-semibold leading-[1.1] mt-2"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            Hi 👋
+            Hi&nbsp;
+            <WavingHand />
             <br />
             I’m Huy Tran
             <br />
