@@ -185,7 +185,7 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <a className="btn btn-primary" href="#projects">
+            <a className="btn btn-amazon" href="#projects">
               View Projects <ArrowRight className="ml-2" size={16} />
             </a>
             {/* <a className="btn btn-ghost" href="#contact">
